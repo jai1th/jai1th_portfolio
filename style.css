@@ -124,6 +124,22 @@ section.pj { padding:58px 0 0; }
 .pj-cta { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; padding:30px 0 60px; }
 .pj-cta .links { display:flex; flex-wrap:wrap; gap:10px; }
 
+/* ---- left progress nav (project pages) ---- */
+.layout { display:flex; align-items:flex-start; gap:8px; width:100%; }
+.toc { flex:0 0 128px; position:sticky; top:88px; display:flex; flex-direction:column; gap:20px; padding:6px 0 6px 22px; margin-left:14px; }
+.toc-line { position:absolute; left:22px; top:10px; bottom:10px; width:1px; background:var(--line); }
+.toc-fill { position:absolute; top:0; left:0; width:100%; background:var(--acc-line); transition:height .1s linear; }
+.toc-item { position:relative; padding-left:20px; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); transition:color .18s; white-space:nowrap; }
+.toc-item:hover { color:var(--text-2); }
+.toc-item .d { position:absolute; left:0; top:50%; transform:translate(-50%,-50%); width:7px; height:7px; border-radius:50%; background:var(--bg); border:1px solid var(--line-2); transition:background .18s,border-color .18s; }
+.toc-item.active { color:var(--acc); }
+.toc-item.active .d { background:var(--acc); border-color:var(--acc); }
+.layout .wrap-page { flex:1 1 auto; min-width:0; margin:0 auto; }
+
+@media (max-width:900px) {
+  .toc { display:none; }
+}
+
 @media (max-width:820px) {
   .ov { grid-template-columns:1fr 1fr; }
   .mx { grid-template-columns:1fr; }

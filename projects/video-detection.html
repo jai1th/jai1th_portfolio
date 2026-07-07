@@ -18,9 +18,20 @@
   </nav>
 </div>
 
+<div class="layout">
+<nav class="toc" aria-label="Page sections">
+  <div class="toc-line"><div class="toc-fill"></div></div>
+  <a href="#top" class="toc-item" data-target="top"><span class="d"></span>README</a>
+  <a href="#problem" class="toc-item" data-target="problem"><span class="d"></span>problem.md</a>
+  <a href="#approach" class="toc-item" data-target="approach"><span class="d"></span>approach.sh</a>
+  <a href="#results" class="toc-item" data-target="results"><span class="d"></span>results.json</a>
+  <a href="#skills" class="toc-item" data-target="skills"><span class="d"></span>skills</a>
+  <a href="#contact" class="toc-item" data-target="contact"><span class="d"></span>contact</a>
+</nav>
+
 <div class="wrap-page">
 
-  <header class="pj-hero">
+  <header class="pj-hero" id="top">
     <div class="cmd" style="padding-top:40px"><span class="p">$</span> <span class="c">cat</span> video-detection/README.md<span class="cur"></span></div>
     <div class="kick">M.S. Thesis · Sep 2025 – Apr 2026</div>
     <h1>Detecting AI-generated video that holds up on generators it has never seen</h1>
@@ -39,7 +50,7 @@
     </div>
   </header>
 
-  <section class="pj">
+  <section class="pj" id="problem">
     <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> problem.md</div></div>
     <h2>The generalization failure most detectors hide</h2>
     <div class="prose">
@@ -47,7 +58,7 @@
     </div>
   </section>
 
-  <section class="pj">
+  <section class="pj" id="approach">
     <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">./approach.sh</span></div></div>
     <div class="steps">
       <div><span class="sn">01</span><span class="st">Built a <b>spatiotemporal R(2+1)D detector</b> and evaluated across 7 generator families (~30K videos) with held-out generators — the honest protocol.</span></div>
@@ -58,7 +69,7 @@
     </div>
   </section>
 
-  <section class="pj">
+  <section class="pj" id="results">
     <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> results.json</div></div>
     <ul style="list-style:none; margin:0 0 32px; padding:0; max-width:62ch;">
       <li style="padding:12px 0 12px 26px; border-bottom:1px solid var(--line); position:relative; font-size:16.5px; color:var(--text-2);"><span style="position:absolute; left:0; color:var(--acc); font-family:var(--mono);">+</span><b style="color:var(--text)">81% AUROC</b> on generator families held out from training — <b style="color:var(--text)">+15%</b> over a single-source baseline</li>
@@ -78,14 +89,14 @@
     </figure>
   </section>
 
-  <section class="pj">
+  <section class="pj" id="skills">
     <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">grep</span> -r skills</div></div>
     <div class="sk">
       <span class="chip">PyTorch</span><span class="chip">video classification</span><span class="chip">R(2+1)D · spatiotemporal CNNs</span><span class="chip">supervised contrastive learning</span><span class="chip">domain generalization</span><span class="chip">evaluation design</span><span class="chip">Grad-CAM interpretability</span><span class="chip">HPC · SLURM</span><span class="chip">media forensics</span>
     </div>
   </section>
 
-  <footer class="pj-foot">
+  <footer class="pj-foot" id="contact">
     <div class="pj-next">
       <a href="../index.html#work"><span class="k">← Back</span><span class="t">All work</span></a>
       <a href="daps.html"><span class="k">Next project →</span><span class="t">DAPS — Parking-Space Detection</span></a>
@@ -99,6 +110,32 @@
     </div>
   </footer>
 </div>
+</div>
+
+<script>
+(function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll('.toc-item'));
+  var targets = items.map(function(a){ return document.getElementById(a.dataset.target); }).filter(Boolean);
+  var fill = document.querySelector('.toc-fill');
+
+  function onScroll(){
+    var y = window.scrollY + window.innerHeight * 0.3;
+    var activeIdx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) activeIdx = i;
+    }
+    items.forEach(function(a, i){ a.classList.toggle('active', i === activeIdx); });
+
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0;
+    if (fill) fill.style.height = (pct * 100) + '%';
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
 
 </body>
 </html>

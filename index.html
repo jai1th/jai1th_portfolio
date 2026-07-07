@@ -183,6 +183,22 @@ footer a:hover { color:var(--acc); }
   .wrow .tag { display:none; }
 }
 @media (prefers-reduced-motion:reduce) { *{ transition:none !important; animation:none !important; } html{ scroll-behavior:auto; } }
+
+/* ---- left progress nav ---- */
+.layout { display:flex; align-items:flex-start; gap:8px; width:100%; }
+.toc { flex:0 0 128px; position:sticky; top:88px; display:flex; flex-direction:column; gap:20px; padding:6px 0 6px 22px; margin-left:14px; }
+.toc-line { position:absolute; left:22px; top:10px; bottom:10px; width:1px; background:var(--line); }
+.toc-fill { position:absolute; top:0; left:0; width:100%; background:var(--acc-line); transition:height .1s linear; }
+.toc-item { position:relative; padding-left:20px; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); transition:color .18s; white-space:nowrap; }
+.toc-item:hover { color:var(--text-2); }
+.toc-item .d { position:absolute; left:0; top:50%; transform:translate(-50%,-50%); width:7px; height:7px; border-radius:50%; background:var(--bg); border:1px solid var(--line-2); transition:background .18s,border-color .18s; }
+.toc-item.active { color:var(--acc); }
+.toc-item.active .d { background:var(--acc); border-color:var(--acc); }
+.layout .wrap-page { flex:1 1 auto; min-width:0; margin:0 auto; }
+
+@media (max-width:900px) {
+  .toc { display:none; }
+}
 </style>
 </head>
 <body>
@@ -196,6 +212,17 @@ footer a:hover { color:var(--acc); }
     <a href="#contact">contact</a>
   </nav>
 </div>
+
+<div class="layout">
+<nav class="toc" aria-label="Page sections">
+  <div class="toc-line"><div class="toc-fill"></div></div>
+  <a href="#top" class="toc-item" data-target="top"><span class="d"></span>whoami</a>
+  <a href="#proof" class="toc-item" data-target="proof"><span class="d"></span>results.json</a>
+  <a href="#thesis" class="toc-item" data-target="thesis"><span class="d"></span>thesis</a>
+  <a href="#work" class="toc-item" data-target="work"><span class="d"></span>work</a>
+  <a href="#stack" class="toc-item" data-target="stack"><span class="d"></span>stack</a>
+  <a href="#contact" class="toc-item" data-target="contact"><span class="d"></span>contact</a>
+</nav>
 
 <div class="wrap-page">
 
@@ -220,7 +247,7 @@ footer a:hover { color:var(--acc); }
   </section>
 
   <!-- PROOF -->
-  <section class="proof">
+  <section class="proof" id="proof">
     <div class="cmd"><span class="p">$</span> <span class="c">cat</span> thesis/results.json <span class="hash"># the number that matters</span></div>
     <div class="big">
       <div class="huge"><span class="t">81<span style="font-size:0.5em">%</span></span></div>
@@ -320,6 +347,32 @@ footer a:hover { color:var(--acc); }
     <span class="mono">AI ENGINEER · <span class="acc">CV · ROBOTICS · MULTIMODAL</span></span>
   </footer>
 </div>
+</div>
+
+<script>
+(function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll('.toc-item'));
+  var targets = items.map(function(a){ return document.getElementById(a.dataset.target); }).filter(Boolean);
+  var fill = document.querySelector('.toc-fill');
+
+  function onScroll(){
+    var y = window.scrollY + window.innerHeight * 0.3;
+    var activeIdx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) activeIdx = i;
+    }
+    items.forEach(function(a, i){ a.classList.toggle('active', i === activeIdx); });
+
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0;
+    if (fill) fill.style.height = (pct * 100) + '%';
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
 
 </body>
 </html>
