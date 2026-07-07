@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VLM & Robotics Integration — Jaivanth Melanaturu</title>
+<meta name="description" content="Research Assistant, University of Michigan: vision-language models on a UR5E robot arm — LoRA fine-tuning, 4× latency reduction, structured detection output." />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="bar">
+  <span class="dots"><i></i><i></i><i></i></span>
+  <span class="path">~/jaivanth/work/<b>vlm-robotics</b></span>
+  <nav>
+    <a href="../index.html#work">← all work</a>
+    <a href="../index.html#contact">contact</a>
+  </nav>
+</div>
+
+<div class="wrap-page">
+
+  <header class="pj-hero">
+    <div class="cmd" style="padding-top:40px"><span class="p">$</span> <span class="c">cat</span> vlm-robotics/README.md<span class="cur"></span></div>
+    <div class="kick">Research Assistant · University of Michigan · Jan 2026 – Present</div>
+    <h1>Putting vision-language models to work on a real robot arm</h1>
+    <p class="sub">Material classification and object detection for a UR5E cobot — where a model is only useful if it's fast, structured, and reliable downstream. In collaboration with UM Health.</p>
+
+    <div class="ov">
+      <div><div class="k">Role</div><div class="v">Research Assistant — VLM &amp; robotics integration</div></div>
+      <div><div class="k">Goal</div><div class="v">VLM-driven material classification for robotic handling</div></div>
+      <div><div class="k">Key outcome</div><div class="v">64% micro-F1 across 10 categories at 4× lower latency</div></div>
+      <div><div class="k">Context</div><div class="v">University of Michigan · UM Health collaboration</div></div>
+    </div>
+    <div class="mx">
+      <div><div class="n">24s <span class="y">→</span> 6s</div><div class="l">per-frame latency — measured 4B vs 30B and chose the smaller model at comparable accuracy</div></div>
+      <div><div class="n">64<span class="y">%</span></div><div class="l">micro-F1 across 10 material categories — Qwen3-VL 4B + LoRA (UnSloth, rank 16)</div></div>
+      <div><div class="n">9,285</div><div class="l">image fine-tuning dataset · structured JSONL detections for reliable parsing</div></div>
+    </div>
+  </header>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> problem.md</div></div>
+    <h2>Off-the-shelf VLMs are too slow and too loose for robotics</h2>
+    <div class="prose">
+      <p>A robot arm can't wait 24 seconds per frame, and it can't parse freeform prose. The pipeline needed detections a planner can consume — <b>structured, low-latency, and grounded in the physical scene</b> (object pose included).</p>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">./approach.sh</span></div></div>
+    <div class="steps">
+      <div><span class="sn">01</span><span class="st">Prototyped object detection with <b>Qwen3-VL 30B via prompt tuning</b> on RGB frames from a UR5E-mounted Orbbec Gemini 335 depth camera, emitting <b>structured JSONL</b> for reliable downstream parsing.</span></div>
+      <div><span class="sn">02</span><span class="st">Fine-tuned <b>Qwen3-VL 4B with LoRA</b> (UnSloth, rank 16, 9,285 images) to classify materials across 10 categories → <b>64% micro-F1</b>.</span></div>
+      <div><span class="sn">03</span><span class="st">Made the model choice <b>on measurement, not size</b>: 24s → 6s per-frame latency at comparable accuracy justified 4B over 30B.</span></div>
+      <div><span class="sn">04</span><span class="st">Recovered object pose across multi-angle captures via <b>ArUco fiducial pose estimation</b> from the flange-mounted camera.</span></div>
+      <div><span class="sn">05</span><span class="st">Prototyped <b>AS7265x spectral sensing</b> (Raspberry Pi, I2C) as a complementary material-classification signal.</span></div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> results.json</div></div>
+    <div class="res">
+      <ul>
+        <li><b>4× latency reduction</b> (24s → 6s per frame) with comparable accuracy — an evaluation-driven model decision</li>
+        <li><b>64% micro-F1</b> on 10-way material classification from a 9,285-image LoRA fine-tune</li>
+        <li>Detections emitted as <b>structured JSONL</b> — robust parsing for the robotics stack</li>
+        <li>Pose recovery + spectral sensing prototyped for multi-modal grounding</li>
+      </ul>
+      <div>
+        <img src="../assets/vlm-rig.jpg" alt="Orbbec Gemini 335 depth camera on a 3D-printed orange mount" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap" style="margin-bottom:14px;">Fig 1 — the Orbbec Gemini 335 depth camera on its 3D-printed mount</div>
+        <img src="../assets/vlm-detections.jpg" alt="Material detections — paper and plastic objects with numbered bounding boxes" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap" style="margin-bottom:14px;">Fig 2 — fine-tuned Qwen3-VL material detections (paper / plastic)</div>
+        <img src="../assets/vlm-jsonl-output.png" alt="Terminal output showing structured JSONL detections" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap">Fig 3 — the same frame as structured JSONL — what the robotics stack actually consumes</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">grep</span> -r skills</div></div>
+    <div class="sk">
+      <span class="chip">vision-language models</span><span class="chip">Qwen3-VL</span><span class="chip">LoRA / QLoRA · UnSloth</span><span class="chip">prompt engineering</span><span class="chip">latency/accuracy trade-offs</span><span class="chip">UR5E cobot</span><span class="chip">RGB-D sensing</span><span class="chip">ArUco pose estimation</span><span class="chip">Raspberry Pi · I2C</span>
+    </div>
+  </section>
+
+  <footer class="pj-foot">
+    <div class="pj-next">
+      <a href="../index.html#work"><span class="k">← Back</span><span class="t">All work</span></a>
+      <a href="kart-perception.html"><span class="k">Next project →</span><span class="t">Autonomous Go-Kart Perception</span></a>
+    </div>
+    <div class="pj-cta">
+      <span class="mono">Active research — happy to talk details.</span>
+      <div class="links">
+        <a class="btn btn--solid" href="mailto:mjaivanth@outlook.com">email <span class="arr">↗</span></a>
+        <a class="btn" href="https://github.com/jai1th" target="_blank" rel="noopener">github <span class="arr">↗</span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

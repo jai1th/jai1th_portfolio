@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DAPS — Parking-Space Detection — Jaivanth Melanaturu</title>
+<meta name="description" content="Instance segmentation of occupied vs open parking spaces with Mask R-CNN — 0.86 avg IoU, 0.90 precision/recall, no per-space hardware sensors." />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="bar">
+  <span class="dots"><i></i><i></i><i></i></span>
+  <span class="path">~/jaivanth/work/<b>daps</b></span>
+  <nav>
+    <a href="../index.html#work">← all work</a>
+    <a href="../index.html#contact">contact</a>
+  </nav>
+</div>
+
+<div class="wrap-page">
+
+  <header class="pj-hero">
+    <div class="cmd" style="padding-top:40px"><span class="p">$</span> <span class="c">cat</span> daps/README.md<span class="cur"></span></div>
+    <div class="kick">Independent Project · October 2024</div>
+    <h1>Parking occupancy from a camera — no per-space sensors required</h1>
+    <p class="sub">DAPS instance-segments occupied vs. open parking spaces straight from existing lot cameras, replacing per-space hardware.</p>
+
+    <div class="ov">
+      <div><div class="k">Role</div><div class="v">Solo — end-to-end: data, training, evaluation</div></div>
+      <div><div class="k">Goal</div><div class="v">Detect open spaces without installing per-space sensors</div></div>
+      <div><div class="k">Key outcome</div><div class="v">0.86 avg IoU · 0.90 precision/recall</div></div>
+      <div><div class="k">Stack</div><div class="v">Python · PyTorch · Mask R-CNN (ResNet50-FPN)</div></div>
+    </div>
+    <div class="mx">
+      <div><div class="n">0.86</div><div class="l">average IoU on occupied vs open space segmentation</div></div>
+      <div><div class="n">0.90</div><div class="l">precision and recall — reliable enough for live guidance</div></div>
+      <div><div class="n">12,416</div><div class="l">lot-camera images used for training and evaluation</div></div>
+    </div>
+  </header>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> problem.md</div></div>
+    <h2>Hardware sensors don't scale; cameras are already there</h2>
+    <div class="prose">
+      <p>Per-space occupancy sensors cost money for every single spot. Lots already have cameras — the problem is turning oblique, overlapping views into <b>per-space occupancy</b>, which needs instance segmentation, not just detection.</p>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">./approach.sh</span></div></div>
+    <div class="steps">
+      <div><span class="sn">01</span><span class="st">Adapted <b>Mask R-CNN (ResNet50-FPN)</b> to instance-segment occupied vs open spaces from lot cameras.</span></div>
+      <div><span class="sn">02</span><span class="st">Trained and evaluated on <b>12,416 images</b> of real lots.</span></div>
+      <div><span class="sn">03</span><span class="st">Reached <b>0.86 avg IoU and 0.90 precision/recall</b> — with zero added hardware per space.</span></div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> results.json</div></div>
+    <div class="res">
+      <ul>
+        <li><b>0.86 average IoU</b>, <b>0.90 precision/recall</b> on occupied-vs-open segmentation</li>
+        <li>Works from <b>existing lot cameras</b> — no per-space sensor install</li>
+        <li>Solo project — full pipeline from data to evaluation</li>
+      </ul>
+      <div>
+        <img src="../assets/daps-2.jpg" alt="Parking lot with per-space occupancy — colored instance masks, space-empty / space-occupied labels" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap" style="margin-bottom:14px;">Fig 1 — per-space occupancy from a single camera view</div>
+        <img src="../assets/daps-1.png" alt="Wide parking-lot view with instance masks and occupancy confidence scores" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap">Fig 2 — dense lot, occupied vs open with confidence scores</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">grep</span> -r skills</div></div>
+    <div class="sk">
+      <span class="chip">instance segmentation</span><span class="chip">Mask R-CNN</span><span class="chip">ResNet50-FPN</span><span class="chip">PyTorch</span><span class="chip">dataset curation</span><span class="chip">model evaluation</span>
+    </div>
+  </section>
+
+  <footer class="pj-foot">
+    <div class="pj-next">
+      <a href="../index.html#work"><span class="k">← Back</span><span class="t">All work</span></a>
+      <a href="feral-animal.html"><span class="k">Next project →</span><span class="t">Feral Animal Detection &amp; Deterrence</span></a>
+    </div>
+    <div class="pj-cta">
+      <span class="mono">More at github.com/jai1th</span>
+      <div class="links">
+        <a class="btn btn--solid" href="mailto:mjaivanth@outlook.com">email <span class="arr">↗</span></a>
+        <a class="btn" href="https://github.com/jai1th" target="_blank" rel="noopener">github <span class="arr">↗</span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Autonomous Go-Kart Perception — Jaivanth Melanaturu</title>
+<meta name="description" content="Perception lead for an autonomous go-kart: YOLO11 road segmentation at 94% mAP50, drivable-corridor geometry, RGB-D fusion, 3 Hz ROS2 output." />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="bar">
+  <span class="dots"><i></i><i></i><i></i></span>
+  <span class="path">~/jaivanth/work/<b>kart-perception</b></span>
+  <nav>
+    <a href="../index.html#work">← all work</a>
+    <a href="../index.html#contact">contact</a>
+  </nav>
+</div>
+
+<div class="wrap-page">
+
+  <header class="pj-hero">
+    <div class="cmd" style="padding-top:40px"><span class="p">$</span> <span class="c">cat</span> kart-perception/README.md<span class="cur"></span></div>
+    <div class="kick">Perception Lead · Intelligent Systems Club, UM-Dearborn · Jun 2025 – May 2026</div>
+    <h1>The perception layer that tells an autonomous go-kart where it can drive</h1>
+    <p class="sub">Led perception for a student-built autonomous kart — from road segmentation to a drivable corridor the planner can actually consume, live at 3&nbsp;Hz.</p>
+
+    <div class="ov">
+      <div><div class="k">Role</div><div class="v">Perception Lead — owned the full perception stack on a student team</div></div>
+      <div><div class="k">Goal</div><div class="v">Camera-only drivable-corridor detection, robust to lighting</div></div>
+      <div><div class="k">Key outcome</div><div class="v">94% mAP50 road segmentation, corridor published at 3 Hz</div></div>
+      <div><div class="k">Context</div><div class="v">Intelligent Systems Club, University of Michigan-Dearborn</div></div>
+    </div>
+    <div class="mx">
+      <div><div class="n">94<span class="y">%</span></div><div class="l">mAP50 (91.4% mAP50-95) — YOLO11 fine-tuned for road segmentation</div></div>
+      <div><div class="n">3<span class="y">×</span></div><div class="l">dataset expansion via augmentation for lighting &amp; viewpoint robustness</div></div>
+      <div><div class="n">3 Hz</div><div class="l">drivable corridor published to the planner as live ROS2 topics</div></div>
+    </div>
+  </header>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> problem.md</div></div>
+    <h2>A kart needs geometry, not pixels</h2>
+    <div class="prose">
+      <p>Raw segmentation masks don't steer a vehicle. The planner needs a <b>drivable corridor</b> — clean left/right boundaries with depth — derived from sparse masks, robust across lighting and viewpoints, delivered on a real-time budget.</p>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">./approach.sh</span></div></div>
+    <div class="steps">
+      <div><span class="sn">01</span><span class="st">Fine-tuned <b>YOLO11</b> on a Roboflow road-segmentation dataset expanded <b>3× via augmentation</b> for lighting and viewpoint robustness → <b>94% mAP50, 91.4% mAP50-95</b>.</span></div>
+      <div><span class="sn">02</span><span class="st">Derived corridor geometry by extracting <b>left/right road boundaries from sparse masks via distance transforms</b>.</span></div>
+      <div><span class="sn">03</span><span class="st">Fused <b>OAK-D W RGB-D depth</b> for kart and bumper localization.</span></div>
+      <div><span class="sn">04</span><span class="st">Published the corridor to the planner as <b>3 Hz ROS2 topics</b> — a stable contract between perception and planning.</span></div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> results.json</div></div>
+    <div class="res">
+      <ul>
+        <li><b>94% mAP50 / 91.4% mAP50-95</b> road segmentation in varied lighting</li>
+        <li>Sparse masks → <b>clean corridor geometry</b> the planner consumes directly</li>
+        <li>Live on the kart — <b>perception-to-planning pipeline running end-to-end</b></li>
+        <li>Led the perception sub-team; owned architecture and delivery</li>
+      </ul>
+      <div>
+        <img src="../assets/kart-segmentation.png" alt="YOLO11 road segmentation — drivable region overlaid in green" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap" style="margin-bottom:14px;">Fig 1 — YOLO11 road segmentation on the kart's camera: drivable region overlay</div>
+        <img src="../assets/kart-vehicle.jpg" alt="The autonomous go-kart with ISC bodywork and roof-mounted perception rig" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap" style="margin-bottom:14px;">Fig 2 — the autonomous go-kart (ISC, UM-Dearborn) with roof-mounted perception</div>
+        <img src="../assets/kart-camera.jpg" alt="Close-up of the roof-mounted stereo depth camera and beacon" style="width:100%; border:1px solid var(--line); display:block;" />
+        <div class="figcap">Fig 3 — the OAK-D W stereo depth camera on the perception mast</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">grep</span> -r skills</div></div>
+    <div class="sk">
+      <span class="chip">team leadership</span><span class="chip">YOLO11</span><span class="chip">semantic segmentation</span><span class="chip">data augmentation</span><span class="chip">distance transforms</span><span class="chip">RGB-D sensor fusion</span><span class="chip">OAK-D W</span><span class="chip">ROS2</span><span class="chip">real-time perception</span>
+    </div>
+  </section>
+
+  <footer class="pj-foot">
+    <div class="pj-next">
+      <a href="../index.html#work"><span class="k">← Back</span><span class="t">All work</span></a>
+      <a href="video-detection.html"><span class="k">Next project →</span><span class="t">AI-Generated Video Detection</span></a>
+    </div>
+    <div class="pj-cta">
+      <span class="mono">Perception & autonomy is where I want to be.</span>
+      <div class="links">
+        <a class="btn btn--solid" href="mailto:mjaivanth@outlook.com">email <span class="arr">↗</span></a>
+        <a class="btn" href="https://github.com/jai1th" target="_blank" rel="noopener">github <span class="arr">↗</span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cross-Dataset AI-Video Detection — Jaivanth Melanaturu</title>
+<meta name="description" content="M.S. thesis: a spatiotemporal detector for AI-generated video that generalizes to unseen generators — 81% AUROC held-out, +15% over baseline." />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="bar">
+  <span class="dots"><i></i><i></i><i></i></span>
+  <span class="path">~/jaivanth/work/<b>video-detection</b></span>
+  <nav>
+    <a href="../index.html#work">← all work</a>
+    <a href="../index.html#contact">contact</a>
+  </nav>
+</div>
+
+<div class="wrap-page">
+
+  <header class="pj-hero">
+    <div class="cmd" style="padding-top:40px"><span class="p">$</span> <span class="c">cat</span> video-detection/README.md<span class="cur"></span></div>
+    <div class="kick">M.S. Thesis · Sep 2025 – Apr 2026</div>
+    <h1>Detecting AI-generated video that holds up on generators it has never seen</h1>
+    <p class="sub">Most published detectors ace their training data and quietly collapse on new generators. This thesis measures that failure honestly — then closes the gap.</p>
+
+    <div class="ov">
+      <div><div class="k">Role</div><div class="v">Sole researcher — M.S. thesis, University of Michigan</div></div>
+      <div><div class="k">Goal</div><div class="v">Cross-generator generalization for AI-video forensics</div></div>
+      <div><div class="k">Key outcome</div><div class="v">81% AUROC on held-out generators, +15% over baseline</div></div>
+      <div><div class="k">Artifact</div><div class="v"><a href="https://doi.org/10.7302/dspace/29187" target="_blank" rel="noopener">Published thesis (DOI) ↗</a></div></div>
+    </div>
+    <div class="mx">
+      <div><div class="n">81<span class="y">%</span></div><div class="l">AUROC on generator families held out from training (+15% vs single-source baseline)</div></div>
+      <div><div class="n">0.219</div><div class="l">lowest EER — DVF under mixed fine-tuning; DVF stays the most stable across all configs</div></div>
+      <div><div class="n">~30k</div><div class="l">videos · 7 generator families · trained on Great Lakes HPC via SLURM</div></div>
+    </div>
+  </header>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> problem.md</div></div>
+    <h2>The generalization failure most detectors hide</h2>
+    <div class="prose">
+      <p>AI-video detectors are usually evaluated on the same generators they were trained on — where scores look great. On unseen generators, performance collapses. Worse, datasets carry <b>shortcuts</b> (frame-count, resolution) that inflate in-domain scores while destroying transfer. A detector that only works on last year's generators is useless in production.</p>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">./approach.sh</span></div></div>
+    <div class="steps">
+      <div><span class="sn">01</span><span class="st">Built a <b>spatiotemporal R(2+1)D detector</b> and evaluated across 7 generator families (~30K videos) with held-out generators — the honest protocol.</span></div>
+      <div><span class="sn">02</span><span class="st">Audited <b>per-generator AUROC</b> during fine-tuning and traced degradation to <b>catastrophic forgetting</b>.</span></div>
+      <div><span class="sn">03</span><span class="st">Reduced it with <b>mixed fine-tuning, generator-aware sampling, and SupCon fine-tuning</b>.</span></div>
+      <div><span class="sn">04</span><span class="st">Neutralized dataset shortcuts via preprocessing — resolution standardization, temporal windowing, center crop, frame normalization, filename hashing — and <b>confirmed with Grad-CAM</b> that the model stopped using them.</span></div>
+      <div><span class="sn">05</span><span class="st">Prioritized <b>EER over raw accuracy</b> to reflect real deployment trade-offs.</span></div>
+    </div>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">cat</span> results.json</div></div>
+    <ul style="list-style:none; margin:0 0 32px; padding:0; max-width:62ch;">
+      <li style="padding:12px 0 12px 26px; border-bottom:1px solid var(--line); position:relative; font-size:16.5px; color:var(--text-2);"><span style="position:absolute; left:0; color:var(--acc); font-family:var(--mono);">+</span><b style="color:var(--text)">81% AUROC</b> on generator families held out from training — <b style="color:var(--text)">+15%</b> over a single-source baseline</li>
+      <li style="padding:12px 0 12px 26px; border-bottom:1px solid var(--line); position:relative; font-size:16.5px; color:var(--text-2);"><span style="position:absolute; left:0; color:var(--acc); font-family:var(--mono);">+</span><b style="color:var(--text)">DVF reaches the lowest EER of the three datasets</b> — and mixed fine-tuning drives it down to <b style="color:var(--text)">0.219</b></li>
+      <li style="padding:12px 0 12px 26px; border-bottom:1px solid var(--line); position:relative; font-size:16.5px; color:var(--text-2);"><span style="position:absolute; left:0; color:var(--acc); font-family:var(--mono);">+</span>Shortcut removal verified with Grad-CAM — scores reflect real signal, not dataset artifacts</li>
+      <li style="padding:12px 0 12px 26px; position:relative; font-size:16.5px; color:var(--text-2);"><span style="position:absolute; left:0; color:var(--acc); font-family:var(--mono);">+</span>Published as an open-access thesis (University of Michigan)</li>
+    </ul>
+
+    <figure style="margin:0 0 32px;">
+      <img src="../assets/thesis-eer.png" alt="Equal Error Rate by dataset (DVF, GenVid, AEGIS) across target-only and mixed fine-tuning configurations" style="width:100%; border:1px solid var(--line); background:#fff; display:block;" />
+      <figcaption class="figcap" style="margin-top:10px;"><b style="color:var(--text-2)">Fig 1 — EER by evaluation dataset (lower is better).</b> Across configurations, <b style="color:var(--acc)">DVF holds the lowest and most stable EER</b>, bottoming out at 0.219 under mixed fine-tuning — evidence the detector transfers rather than memorizing one generator's artifacts.</figcaption>
+    </figure>
+
+    <figure style="margin:0;">
+      <img src="../assets/thesis-fpr-fnr.png" alt="False-positive rate on real videos and false-negative rate on fake videos by source" style="width:100%; border:1px solid var(--line); background:#fff; display:block;" />
+      <figcaption class="figcap" style="margin-top:10px;"><b style="color:var(--text-2)">Fig 2 — error breakdown (lower is better).</b> FPR stays low on DVF-real (0.255); FNR on unseen fakes is a minimal 0.118 (Sora) / 0.189 (Kling) — the model rarely lets a generated video through.</figcaption>
+    </figure>
+  </section>
+
+  <section class="pj">
+    <div class="sh"><div class="cmd"><span class="p">$</span> <span class="c">grep</span> -r skills</div></div>
+    <div class="sk">
+      <span class="chip">PyTorch</span><span class="chip">video classification</span><span class="chip">R(2+1)D · spatiotemporal CNNs</span><span class="chip">supervised contrastive learning</span><span class="chip">domain generalization</span><span class="chip">evaluation design</span><span class="chip">Grad-CAM interpretability</span><span class="chip">HPC · SLURM</span><span class="chip">media forensics</span>
+    </div>
+  </section>
+
+  <footer class="pj-foot">
+    <div class="pj-next">
+      <a href="../index.html#work"><span class="k">← Back</span><span class="t">All work</span></a>
+      <a href="daps.html"><span class="k">Next project →</span><span class="t">DAPS — Parking-Space Detection</span></a>
+    </div>
+    <div class="pj-cta">
+      <span class="mono">Want the full story? It's a good interview topic.</span>
+      <div class="links">
+        <a class="btn btn--solid" href="mailto:mjaivanth@outlook.com">email <span class="arr">↗</span></a>
+        <a class="btn" href="https://doi.org/10.7302/dspace/29187" target="_blank" rel="noopener">thesis <span class="arr">↗</span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
